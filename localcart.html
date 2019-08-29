@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Cart</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">	
+	<style>
+		header{
+			padding:30px;
+			text-align:center;
+			font-size:36px;
+			font-style:bold;
+			}
+		table{
+			border:1px solid black;
+			width:80%;
+			margin:auto;
+			border-radius:10px;
+			}
+		.remove{
+			position:relative;
+		    align:center;
+			text-color:lightblue;
+			text-decoration:underline;
+			}
+		.checkout{
+			border: 5px solid black;
+			border-radius:20px;
+			background-color:black;
+			color:gold;
+			margin:20px auto;
+			text-align:center;
+			width:20%;
+			height:30px;
+			padding:0px;
+			position:relative;
+			top:430px;
+			}
+		.checkout a{
+			text-decoration:none;
+			color:gold;
+			font-size:24px;
+			}
+		.topnav{
+			position:-webkit-sticky;
+			list-style:none;
+			background:black;
+			height:80px;
+			width:90%;
+			margin:auto;
+			border-radius:10px;
+			border:5px solid gold;
+			padding:0;
+			}
+		ul li{
+			display: block;
+			position: relative;
+			float :left;
+			width:33.33%;
+			margin:20px auto;
+			}
+		ul li a{
+		    font-size: 24px;
+			text-decoration: none;
+			color:gold;
+			padding:10px 2px;
+			margin:10px;
+			}
+		ul .cart{ 
+			float:right;
+			}
+		tr{
+			text-align:center;
+			height:30px;
+			}
+		.continue, .remove{
+			width:50%;
+			height:20px;
+			font-size:16px;
+			color:black;
+			cursor:pointer;
+			}
+		.continue a{
+			position:relative;
+			left:10%;
+			font-size:24px;
+			text-decoration:underline;
+			}
+		.total1{
+			position:relative;
+			top:280px;
+			text-align:center;
+			font-size:24px;
+			color:black;
+			}
+		.total1 input{
+			font:24px Times;
+			border-style:none;
+			text-align:center;
+			width:8%;
+			background-color:lightyellow;
+			}
+		.remove{
+			background-color:lightyellow;
+			border-style:none;
+			}
+		@media (max-width:800px){
+			.remove{
+				width:100%;
+				text-align:center;
+				}
+			}
+	</style>  
+	<script>
+		function init(){
+			if(localStorage.length!=0){
+			document.getElementById("deliverycharge").disabled=true;
+			var table= document.getElementById("products-table");	//to insert the products in the table
+			var row = table.insertRow(); 		//adding first product
+			var cell1=row.insertCell(0);
+			var cell2=row.insertCell(1);
+			var cell3=row.insertCell(2);
+			var cell4=row.insertCell(3);
+			var cell5=row.insertCell(4);
+			cell1.innerHTML=localStorage.getItem("title0");
+			cell2.innerHTML=localStorage.getItem("id");
+			cell3.innerHTML=localStorage.getItem("quant");
+			cell4.innerHTML=localStorage.getItem("cost");
+			cell5.innerHTML='<button class="remove" onclick="removeRows(this)">Remove</button>'
+			if (localStorage.length>5){      		//adding second product
+				var row = table.insertRow();
+				var cell1=row.insertCell(0);
+				var cell2=row.insertCell(1);
+				var cell3=row.insertCell(2);
+				var cell4=row.insertCell(3);
+				var cell5=row.insertCell(4);
+				cell1.innerHTML=localStorage.getItem("title1");
+				cell2.innerHTML=localStorage.getItem("id1");
+				cell3.innerHTML=localStorage.getItem("quant1");
+				cell4.innerHTML=localStorage.getItem("rupees1");	
+				cell5.innerHTML='<button class="remove" onclick="removeRows(this)">Remove</button>'
+				if (localStorage.length>9){			//adding third product
+					var row = table.insertRow();
+					var cell1=row.insertCell(0);
+					var cell2=row.insertCell(1);
+					var cell3=row.insertCell(2);
+					var cell4=row.insertCell(3);
+					var cell5=row.insertCell(4);
+					cell1.innerHTML=localStorage.getItem("title2");
+					cell2.innerHTML=localStorage.getItem("id2");
+					cell3.innerHTML=localStorage.getItem("quant2");
+					cell4.innerHTML=localStorage.getItem("rupees2");
+					cell5.innerHTML='<button class="remove" onclick="removeRows(this)">Remove</button>';
+					if (localStorage.length>13){			//adding fourth product 
+						var row = table.insertRow();
+						var cell1=row.insertCell(0);
+						var cell2=row.insertCell(1);
+						var cell3=row.insertCell(2);
+						var cell4=row.insertCell(3);
+						var cell5=row.insertCell(4);
+						cell1.innerHTML=localStorage.getItem("title3");
+						cell2.innerHTML=localStorage.getItem("id3");
+						cell3.innerHTML=localStorage.getItem("quant3");
+						cell4.innerHTML=localStorage.getItem("rupees3");
+						cell5.innerHTML='<button class="remove" onclick="removeRows(this)">Remove</button>';
+						}
+					}
+				}
+			grandTotal(); 
+			}
+			}
+		function grandTotal(){		 //finding the product price total
+			var tab=document.getElementById("products-table"),sumVal=0;
+			if(tab.rows.length>1){
+			for( var i=1; i<tab.rows.length; i++){
+				sumVal = sumVal + parseFloat(tab.rows[i].cells[3].innerHTML);  //calculating sum
+				}
+			if(isNaN(sumVal)){      //if sum is not a number i.e.,. if any wrong detailed product is added
+				alert("Please enter valid products");
+				var table= document.getElementById("products-table");
+				var x= table.rows.length;
+				document.getElementById("products-table").deleteRow(1);    //delete that wrong product
+				localStorage.removeItem("title0");
+				localStorage.removeItem("id");
+				localStorage.removeItem("quant");
+				localStorage.removeItem("cost");
+				if(localStorage.length>4){         //rearranging the products
+					pro1to0();
+					if(localStorage.length>7){
+						pro2to1();
+						if(localStorage.length>11){
+							pro3t02;
+							localStorage.removeItem("title3");
+							localStorage.removeItem("id3");
+							localStorage.removeItem("quant3");
+							localStorage.removeItem("rupees3");
+							}
+						else{
+							localStorage.removeItem("title2");
+							localStorage.removeItem("id2");
+							localStorage.removeItem("quant2");
+							localStorage.removeItem("rupees2");
+							}
+						}
+					else{
+						localStorage.removeItem("title1");
+						localStorage.removeItem("id1");
+						localStorage.removeItem("quant1");
+						localStorage.removeItem("rupees1");
+						}
+					}
+				}
+			if(localStorage.length>3){      //if table has atleast one product then
+				var tab=document.getElementById("products-table"),sumVal1=0;
+				for( var i=1; i<tab.rows.length; i++){
+					sumVal1 = sumVal1 + parseFloat(tab.rows[i].cells[3].innerHTML);		//calculating sum
+					}
+				var delicharge=document.getElementById("deliverycharge").value;
+				var tot1=parseFloat(sumVal1)+ Number(delicharge);
+				tot2=tot1.toFixed(2);
+				document.getElementById("total").value=tot2 + " $ ";			//adding with delivery charges
+				localStorage.setItem("price",tot2);
+				}
+				}
+			else{
+				document.getElementById("total").value=0;		//if no product in the cart then grandtotal is 0
+				localStorage.removeItem("price");
+				}
+			document.getElementById("total").disabled= true;
+			document.getElementById("total").style.background="lightyellow";
+			}	
+			//Remove the row product in localStorage by comparing table values with localStorage values
+		function removeRow(){
+			var table=document.getElementById("products-table");
+			if(table.rows.length==4){
+				var a = table.rows[1].cells[0].innerHTML;
+				var b = table.rows[2].cells[0].innerHTML;
+				var c = table.rows[3].cells[0].innerHTML;
+				var t0=localStorage.getItem("title0");
+				var t1=localStorage.getItem("title1");
+				var t2=localStorage.getItem("title2");
+				var t3=localStorage.getItem("title3");
+				if((a!=t0)&&(b!=t0)&&(c!=t0)){
+					localStorage.removeItem("title0");
+					localStorage.removeItem("quant");
+					localStorage.removeItem("id");
+					localStorage.removeItem("cost");
+					title0();
+					}
+				if((a!=t1)&&(b!=t1)&&(c!=t1)){
+					localStorage.removeItem("title1");
+					localStorage.removeItem("id1");
+					localStorage.removeItem("quant1");
+					localStorage.removeItem("rupees1");
+					title1();
+					}
+				if((a!=t2)&&(b!=t2)&&(c!=t2)){
+					localStorage.removeItem("title2");
+					localStorage.removeItem("id2");
+					localStorage.removeItem("quant2");
+					localStorage.removeItem("rupees2");
+					title2();
+					}
+				if((a!=t3)&&(b!=t3)&&(c!=t3)){
+					localStorage.removeItem("title3");
+					localStorage.removeItem("id3");
+					localStorage.removeItem("quant3");
+					localStorage.removeItem("rupees3");
+					title3();
+					}
+				}
+			else if(table.rows.length==3){
+				var a= table.rows[1].cells[0].innerHTML;
+				var b= table.rows[2].cells[0].innerHTML;
+				var t0=localStorage.getItem("title0");
+				var t1=localStorage.getItem("title1");
+				var t2=localStorage.getItem("title2");
+				if((a!=t0)&&(b!=t0)){
+					localStorage.removeItem("title0");
+					localStorage.removeItem("id");
+					localStorage.removeItem("quant");
+					localStorage.removeItem("cost");
+					title0();
+					}
+				if((a!=t1)&&(b!=t1)){
+					localStorage.removeItem("title1");
+					localStorage.removeItem("id1");
+					localStorage.removeItem("quant1");
+					localStorage.removeItem("rupees1");
+					title1();
+					}
+				if((a!=t2)&&(b!=t2)){
+					localStorage.removeItem("title2");
+					localStorage.removeItem("id2");
+					localStorage.removeItem("quant2");
+					localStorage.removeItem("rupees2");
+					title2();
+					}
+				}
+			else if(table.rows.length==2){
+				var a= table.rows[1].cells[0].innerHTML;
+				var t0 = localStorage.getItem("title0");
+				var t1 = localStorage.getItem("title1");
+				if(a!=t0){
+					localStorage.removeItem("title0");
+					localStorage.removeItem("id");
+					localStorage.removeItem("quant");
+					localStorage.removeItem("cost");
+					title0();
+					}
+				if(a!=t1){
+					localStorage.removeItem("title1");
+					localStorage.removeItem("id1");
+					localStorage.removeItem("quant1");
+					localStorage.removeItem("rupees1");
+					title1();
+					}
+				}
+			else if(table.length==1){
+				localStorage.removeItem("title0");
+				localStorage.removeItem("id");
+				localStorage.removeItem("quant");
+				localStorage.removeItem("cost");
+				localStorage.removeItem("price");
+				}
+			}
+		function removeRows(o){		//Remove row in the table
+			var p=o.parentNode.parentNode;
+			p.parentNode.removeChild(p);
+			if(localStorage.length<=5){
+				localStorage.removeItem("title0");
+				localStorage.removeItem("id");
+				localStorage.removeItem("quant");
+				localStorage.removeItem("cost");
+				localStorage.removeItem("price");
+				document.getElementById("total").value=0;
+				}
+			else{
+				grandTotal();
+				removeRow();
+				}
+			}
+		function title0(){   //if forth product is removed, ordering of other products
+			if(localStorage.length==13){
+			pro1to0();
+			pro2to1();
+			pro3to2();
+			}
+			if(localStorage.length==9){
+				if((localStorage.getItem("title1")!=null)&&(localStorage.getItem("title2")!=null)){
+					pro1to0();
+					pro2to1();
+					}
+				else if((localStorage.getItem("title1")!=null)&&(localStorage.getItem("title3")!=null)){
+					pro1to0();
+					pro3to2();
+					pro2to1();
+					}
+				else if((localStorage.getItem("title2")!=null)&&(localStorage.getItem("title3")!=null)){
+					pro2to1();
+					pro1to0();
+					pro3to2();
+					pro2to1();
+					}
+				}
+			if(localStorage.length==5){
+				if(localStorage.getItem("title1")!=null){
+					pro1to0();
+					}
+				if(localStorage.getItem("title2")!=null){
+					pro2to1();
+					pro1to0();
+					}
+				if(localStorage.getItem("title3")!=null){
+					pro3to2();
+					pro2to1();
+					pro1to0();
+					}
+				}
+			}
+		function title1(){		//if third product is removed, ordering of remaining products
+			if(localStorage.length==13){
+				pro2to1();
+				pro3to2();
+				}
+			if(localStorage.length==9){
+				if(localStorage.getItem("title3")==null){
+					pro2to1();
+					}
+				else if(localStorage.getItem("title2")==null){
+					pro3to2();
+					pro2to1();
+					}
+				else if(localStorage.getItem("title0")==null){
+					pro2to1();
+					pro1to0();
+					pro3to2();
+					pro2to1();
+					}
+				}
+			if(localStorage.Length==5){		
+				if(localStorage.getItem("title2")!=null){
+					pro2to1();
+					pro1to0();
+					}
+				if(localStorage.getItem("title3")!=null){
+					pro3to2();
+					pro2to1();
+					pro1to0();
+					}
+				}
+			}	
+		function title2(){		//if second product is removed, ordering of remainig products
+			if(localStorage.length==13){
+				pro3to2();
+				}
+			if(localStorage.length==9){
+				if(localStorage.getItem("title0")==null){
+					pro1to0();
+					pro3to2();
+					pro2to1();
+					}
+				if(localStorage.getItem("title1")==null){
+					pro3to2();
+					pro2to1();
+					}
+				}
+			if(localStorage.length==5){
+				if(localStorage.getItem("title1")!=null){
+					pro1to0();
+					}
+				if(localStorage.getItem("title3")!=null){
+					pro3to2();
+					pro2to1();
+					pro1to0();
+					}
+				}
+			}
+		function title3(){		//if first product is removed, ordering of remaining products
+			if(localStorage.length==9){
+				if(localStorage.getItem("title0")==null){
+					pro1to0();
+					pro2to1();
+					}
+				else if(localStorage.getItem("title1")==null){
+					pro2to1();
+					}
+				}
+			if(localStorage.length==5){
+				if(localStorage.getItem("title1")!=null){
+					pro1to0();
+					}
+				if(localStorage.getItem("title2")!=null){
+					pro2to1();
+					pro1to0();
+					}
+				}
+			}
+		function products(){		//Trying to add more than 4 products
+			if(localStorage.length>=16){
+				alert("You can add only 4 product to cart");
+				window.location.href("localcart.html");
+				}
+			else{
+				window.location.replace("handicraft.html");
+				}
+			}
+		function previous(){		// function onclick back
+			window.history.back();
+			}
+		function pro1to0(){		//Changing the values of product1 to product0
+			var t1=localStorage.getItem("title1");
+			var i1=localStorage.getItem("id1");
+			var q1=localStorage.getItem("quant1");
+			var r1=localStorage.getItem("rupees1");
+			localStorage.setItem("title0", t1);
+			localStorage.setItem("id",i1);
+			localStorage.setItem("quant",q1);
+			localStorage.setItem("cost",r1);
+			localStorage.removeItem("title1");
+			localStorage.removeItem("id1");
+			localStorage.removeItem("quant1");
+			localStorage.removeItem("rupees1");
+			}
+		function pro2to1(){		//Changing the values of product2 to product1
+			var t2 = localStorage.getItem("title2");
+			var i2= localStorage.getItem("id2");
+			var q2=localStorage.getItem("quant2");
+			var r2= localStorage.getItem("rupees2");
+			localStorage.setItem("title1",t2);
+			localStorage.setItem("id1", i2);
+			localStorage.setItem("quant1",q2);
+			localStorage.setItem("rupees1",r2);
+			localStorage.removeItem("title2");
+			localStorage.removeItem("id2");
+			localStorage.removeItem("rupees2");
+			localStorage.removeItem("quant2");
+			}
+		function pro3to2(){		//Changing the values of product3 to product2
+			var t3=localStorage.getItem("title3");
+			var i3= localStorage.getItem("id3");
+			var q3=localStorage.getItem("quant3");
+			var r3= localStorage.getItem("rupees3");
+			localStorage.setItem("title2",t3);
+			localStorage.setItem("id2", i3);
+			localStorage.setItem("quant2",q3);
+			localStorage.setItem("rupees2",r3);
+			localStorage.removeItem("title3");
+			localStorage.removeItem("id3");
+			localStorage.removeItem("quant3");
+			localStorage.removeItem("rupees3");
+			}
+	</script>		
+</head>
+
+<body onload="init()" style="background-color:lightyellow">
+	<ul class="topnav">
+		<li onclick="previous()" style="cursor:pointer"><a><i class="fa fa-fw fa-angle-left" style="color:gold"></i>  Back</a></li>
+		<li><a href="handicraft.html"><i class="fa fa-fw fa-home" style="color:gold"></i>  Home</a></li>
+	</ul>
+	<header>Cart Page </header>
+	<table class="price" id="products-table">
+	<tr>
+	<th> Product Name </th>
+	<th> Product ID </th>
+	<th> Quantity  </th>
+		<th> Product price </th>
+		<th> Remove</th>
+	</tr>	
+	
+	<div class="continue"><a onclick="products()">Continue shopping</a></div>
+	<div class="checkout" align="center"><a href="deliveryinfo.html">Checkout</a></div>
+	<div class="total1">
+		<div> Delivery Charges: <input type="text" id="deliverycharge" value="17"></div>
+		<div> Grand Total : <input type="text" id="total"/></div>
+	</div>
+</body>
+
+</html>
